@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Integrated Code</title>
+  <style>
+    body { 
+    font-family: Arial, Helvetica, sans-serif; 
+    text-align: center; 
+}
+
+#output {
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid;
+    min-height: 100px;
+}
+
+  </style>
+</head>
+<body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpeechToText</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>SpeechToText</h1>
+    <button id="startButton">Start</button>
+    <div id="output"></div> <!-- Corrected the typo from uotput to output -->
+    
+    <script src="script.js"></script> <!-- Corrected the missing script tag closure -->
+</body>
+</html>
+
+  <script>
+    // script.js
+const startButton = document.getElementById('startButton');
+const output = document.getElementById('output');
+
+// Check if Speech Recognition API is available in the browser
+const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+recognition.lang = 'en-US';  // Set language
+recognition.continuous = true;  // Keep recognition on until stop
+recognition.interimResults = true;  // Show partial results while speaking
+
+startButton.addEventListener('click', () => {
+    if (startButton.textContent === 'Start') {
+        recognition.start();  // Start listening when clicked
+        startButton.textContent = 'Stop';  // Change button text to 'Stop'
+    } else {
+        recognition.stop();  // Stop listening when clicked
+        startButton.textContent = 'Start';  // Change button text to 'Start'
+    }
+});
+
+recognition.onresult = (event) => {
+    let transcript = '';
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+        transcript += event.results[i][0].transcript;
+    }
+    output.textContent = transcript;  // Show the recognized speech in the output div
+};
+
+recognition.onerror = (event) => {
+    console.error('Speech recognition error:', event.error);
+    alert('There was an error with speech recognition: ' + event.error);
+};
+
+  </script>
+</body>
+</html>
